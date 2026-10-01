@@ -15,6 +15,29 @@ Route::get('/', [CatalogController::class, 'index'])->name('home');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/catalog/{book:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 
+// Helper Rute untuk Migrasi & Seeder Database Supabase di Vercel
+Route::get('/run-migration', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
+            '--force' => true,
+            '--seed' => true,
+        ]);
+        return '<div style="font-family:sans-serif;padding:30px;background:#ecfdf5;color:#047857;border-radius:12px;">'
+            . '<h2 style="margin:0 0 10px 0;">✅ Migration & Seeding Supabase Berhasil!</h2>'
+            . '<p>Tabel-tabel dan data awal perpustakaan berhasil dibuat di Supabase.</p>'
+            . '<pre style="background:#111827;color:#10b981;padding:15px;border-radius:8px;overflow-x:auto;">' 
+            . \Illuminate\Support\Facades\Artisan::output() 
+            . '</pre>'
+            . '<br><a href="/" style="background:#047857;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Kembali ke Aplikasi</a>'
+            . '</div>';
+    } catch (\Exception $e) {
+        return '<div style="font-family:sans-serif;padding:30px;background:#fef2f2;color:#b91c1c;border-radius:12px;">'
+            . '<h2>❌ Error Migration</h2>'
+            . '<p>' . e($e->getMessage()) . '</p>'
+            . '</div>';
+    }
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
