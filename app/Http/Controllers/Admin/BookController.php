@@ -50,7 +50,8 @@ class BookController extends Controller
             'publisher' => ['required', 'string', 'max:255'],
             'publication_year' => ['required', 'integer', 'min:1900', 'max:' . date('Y')],
             'total_stock' => ['required', 'integer', 'min:1'],
-            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'cover_url' => ['nullable', 'url'],
             'description' => ['nullable', 'string'],
         ]);
 
@@ -58,7 +59,12 @@ class BookController extends Controller
         $validated['available_stock'] = $validated['total_stock'];
 
         if ($request->hasFile('cover_image')) {
-            $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
+            $file = $request->file('cover_image');
+            $mime = $file->getMimeType();
+            $base64 = base64_encode(file_get_contents($file->getRealPath()));
+            $validated['cover_image'] = "data:{$mime};base64,{$base64}";
+        } elseif ($request->filled('cover_url')) {
+            $validated['cover_image'] = $request->cover_url;
         }
 
         Book::create($validated);
@@ -82,7 +88,8 @@ class BookController extends Controller
             'publisher' => ['required', 'string', 'max:255'],
             'publication_year' => ['required', 'integer', 'min:1900', 'max:' . date('Y')],
             'total_stock' => ['required', 'integer', 'min:0'],
-            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'cover_url' => ['nullable', 'url'],
             'description' => ['nullable', 'string'],
         ]);
 
@@ -93,10 +100,14 @@ class BookController extends Controller
         $validated['available_stock'] = $newAvailableStock;
 
         if ($request->hasFile('cover_image')) {
-            if ($book->cover_image && Storage::disk('public')->exists($book->cover_image)) {
-                Storage::disk('public')->delete($book->cover_image);
-            }
-            $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
+            $file = $request->file('cover_image');
+            $mime = $file->getMimeType();
+            $base64 = base64_encode(file_get_contents($file->getRealPath()));
+            $validated['cover_image'] = "data:{$mime};base64,{$base64}";
+        } elseif ($request->filled('cover_url')) {
+            $validated['cover_image'] = $request->cover_url;
+        } else {
+            unset($validated['cover_image']);
         }
 
         $book->update($validated);

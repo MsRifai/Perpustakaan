@@ -33,8 +33,8 @@
                         <tr class="hover:bg-slate-50">
                             <td class="py-3.5 px-4 flex items-center space-x-3">
                                 <div class="w-10 h-14 bg-slate-100 rounded-lg overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
-                                    @if($book->cover_image)
-                                        <img src="{{ asset('storage/' . $book->cover_image) }}" class="w-full h-full object-cover">
+                                    @if($book->cover_url)
+                                        <img src="{{ $book->cover_url }}" class="w-full h-full object-cover">
                                     @else
                                         <span class="text-[9px] text-slate-400">No Cover</span>
                                     @endif

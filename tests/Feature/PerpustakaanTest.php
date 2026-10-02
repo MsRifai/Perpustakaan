@@ -154,4 +154,27 @@ class PerpustakaanTest extends TestCase
         $this->assertEquals('returned', $borrowing->fresh()->status);
         $this->assertEquals(5, $this->book->fresh()->available_stock);
     }
+
+    public function test_admin_can_create_book_with_cover_upload(): void
+    {
+        $file = \Illuminate\Http\UploadedFile::fake()->create('cover.jpg', 10, 'image/jpeg');
+
+        $response = $this->actingAs($this->admin)->post(route('admin.books.store'), [
+            'category_id' => $this->category->id,
+            'title' => 'Buku Baru With Cover',
+            'isbn' => '978-9999999999',
+            'author' => 'Penulis Fabel',
+            'publisher' => 'Penerbit Utama',
+            'publication_year' => 2024,
+            'total_stock' => 3,
+            'cover_image' => $file,
+        ]);
+
+        $response->assertRedirect(route('admin.books.index'));
+
+        $createdBook = Book::where('isbn', '978-9999999999')->first();
+        $this->assertNotNull($createdBook);
+        $this->assertStringStartsWith('data:image/', $createdBook->cover_image);
+        $this->assertEquals($createdBook->cover_image, $createdBook->cover_url);
+    }
 }

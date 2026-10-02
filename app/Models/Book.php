@@ -48,4 +48,20 @@ class Book extends Model
     {
         return $this->available_stock > 0;
     }
+
+    /**
+     * Get full URL or Data URI for book cover image.
+     */
+    public function getCoverUrlAttribute(): ?string
+    {
+        if (!$this->cover_image) {
+            return null;
+        }
+
+        if (str_starts_with($this->cover_image, 'http://') || str_starts_with($this->cover_image, 'https://') || str_starts_with($this->cover_image, 'data:')) {
+            return $this->cover_image;
+        }
+
+        return asset('storage/' . $this->cover_image);
+    }
 }

@@ -64,9 +64,17 @@
                 </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Foto Cover Buku</label>
-                <input type="file" name="cover_image" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-600">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Upload File Cover (Komputer)</label>
+                    <input type="file" name="cover_image" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-600">
+                    <p class="text-[10px] text-slate-400 mt-1">Format: JPG, PNG, WebP (Otomatis disimpan permanen)</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Atau Gunakan Link / URL Gambar</label>
+                    <input type="url" name="cover_url" value="{{ old('cover_url') }}" placeholder="https://example.com/cover.jpg" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#00B074]">
+                    <p class="text-[10px] text-slate-400 mt-1">Gunakan URL gambar dari internet jika tidak upload file</p>
+                </div>
             </div>
 
             <div>

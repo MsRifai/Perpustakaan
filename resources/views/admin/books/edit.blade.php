@@ -65,9 +65,26 @@
                 </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ganti Foto Cover</label>
-                <input type="file" name="cover_image" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-600">
+            @if($book->cover_url)
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center space-x-4">
+                    <img src="{{ $book->cover_url }}" class="w-12 h-16 object-cover rounded-lg border border-slate-300 shrink-0">
+                    <div>
+                        <p class="text-xs font-bold text-slate-800">Cover Terpasang</p>
+                        <p class="text-[10px] text-slate-400">Gambar saat ini siap ditampilkan secara permanen.</p>
+                    </div>
+                </div>
+            @endif
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ganti File Cover (Upload)</label>
+                    <input type="file" name="cover_image" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-600">
+                    <p class="text-[10px] text-slate-400 mt-1">Biarkan kosong jika tidak ingin mengubah cover</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Atau Ubah Link / URL Gambar</label>
+                    <input type="url" name="cover_url" value="{{ old('cover_url', str_starts_with($book->cover_image ?? '', 'http') ? $book->cover_image : '') }}" placeholder="https://example.com/cover.jpg" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#00B074]">
+                </div>
             </div>
 
             <div>

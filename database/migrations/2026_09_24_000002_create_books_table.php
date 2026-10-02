@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('publication_year');
             $table->integer('total_stock')->default(1);
             $table->integer('available_stock')->default(1);
-            $table->string('cover_image')->nullable();
+            $table->text('cover_image')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
 
