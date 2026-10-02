@@ -6,6 +6,9 @@ $storageDirs = [
     '/tmp/framework/sessions',
     '/tmp/framework/views',
     '/tmp/framework/cache',
+    '/tmp/storage/app/public',
+    '/tmp/storage/app/public/covers',
+    '/tmp/storage/app/private',
 ];
 
 foreach ($storageDirs as $dir) {

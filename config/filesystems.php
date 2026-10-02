@@ -32,7 +32,9 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            'root' => (env('VERCEL') || isset($_SERVER['VERCEL']) || isset($_ENV['VERCEL']) || is_dir('/var/task'))
+                ? '/tmp/storage/app/private'
+                : storage_path('app/private'),
             'serve' => true,
             'throw' => false,
             'report' => false,
@@ -40,7 +42,9 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => (env('VERCEL') || isset($_SERVER['VERCEL']) || isset($_ENV['VERCEL']) || is_dir('/var/task'))
+                ? '/tmp/storage/app/public'
+                : storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,

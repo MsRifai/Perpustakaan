@@ -35,7 +35,9 @@
                     @foreach($members as $m)
                         <tr class="hover:bg-slate-50">
                             <td class="py-3.5 px-4">
-                                <p class="font-bold text-slate-800 text-sm">{{ $m->name }}</p>
+                                <a href="{{ route('admin.members.show', $m->id) }}" class="font-bold text-slate-800 text-sm hover:text-[#00B074] transition-colors">
+                                    {{ $m->name }}
+                                </a>
                                 <p class="text-[11px] text-slate-400">{{ $m->email }}</p>
                             </td>
                             <td class="py-3.5 px-4">

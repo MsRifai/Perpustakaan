@@ -38,6 +38,22 @@ Route::get('/run-migration', function () {
     }
 });
 
+// Helper Rute untuk Menyajikan File Storage di Vercel Serverless
+Route::get('/storage/{path}', function ($path) {
+    $tmpFile = '/tmp/storage/app/public/' . $path;
+    $localFile = storage_path('app/public/' . $path);
+
+    if (file_exists($tmpFile)) {
+        return response()->file($tmpFile);
+    }
+
+    if (file_exists($localFile)) {
+        return response()->file($localFile);
+    }
+
+    abort(404);
+})->where('path', '.*');
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
